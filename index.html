@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#0F0E0C"/>
+<title>Solace — Feature Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0F0E0C; --bgMid:#1A1814;
+    --flame:#E6C079; --ember:#F0D9A0; --ice:#C9A96E; --gold:#D4B896;
+    --mint:#C4918A; --crimson:#C97B4B;
+    --text:#F2EDE4; --muted:#8C8070; --dim:#7C7363;
+    --glass:rgba(255,248,235,0.04); --border:rgba(255,248,235,0.09);
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;overflow-x:hidden;}
+  body{
+    background:radial-gradient(120% 30% at 50% 0, rgba(230,192,121,0.10), rgba(15,14,12,0) 60%), var(--bg);
+    background-attachment:fixed;
+    color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:34px 20px 70px;}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;color:var(--text);}
+  p{color:var(--text);}
+  .muted{color:var(--muted);}
+  .accent{color:var(--flame);}
+  a{color:var(--flame);text-decoration:none;}
+
+  /* Cover */
+  .cover{text-align:center;padding:24px 0 10px;}
+  .cover .wm{font-family:var(--serif);font-weight:600;font-size:clamp(42px,13vw,64px);margin:12px 0 4px;}
+  .cover .tag{color:var(--muted);font-size:clamp(14px,4vw,17px);margin-bottom:14px;}
+  .rule{width:62px;height:2px;background:linear-gradient(90deg,transparent,var(--flame),transparent);margin:22px auto;}
+  .kicker{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--flame);font-weight:600;}
+  .cover .sub{color:var(--dim);font-size:12px;margin-top:18px;letter-spacing:.03em;}
+
+  /* Section */
+  section{padding:30px 0;border-top:1px solid var(--border);}
+  section:first-of-type{border-top:none;}
+  .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .h-sec{font-size:clamp(24px,7vw,30px);margin:4px 0 4px;}
+  .h-sec .num{color:var(--flame);font-size:.62em;margin-right:9px;}
+  .sec-intro{color:var(--muted);font-size:15px;margin:6px 0 18px;}
+  .lead{font-size:17px;line-height:1.7;margin-bottom:14px;}
+  .lead b{color:var(--flame);}
+
+  /* Cards / grids — collapse to 1 column on mobile automatically */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:6px;}
+  .card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:15px 16px;}
+  .card h3{font-size:16px;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .card .ic{font-size:17px;}
+  .card p{font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .badge{display:inline-block;margin-top:9px;margin-right:5px;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:20px;}
+  .b-free{background:rgba(140,128,112,.18);color:var(--gold);}
+  .b-pro{background:rgba(230,192,121,.16);color:var(--flame);}
+  .b-family{background:rgba(201,123,75,.18);color:var(--crimson);}
+
+  .modes{display:flex;flex-direction:column;gap:11px;margin-top:10px;}
+  .mode{background:var(--glass);border:1px solid var(--border);border-left:3px solid var(--flame);border-radius:11px;padding:14px 16px;}
+  .mode.m2{border-left-color:var(--crimson);} .mode.m3{border-left-color:var(--ice);}
+  .mode h3{font-size:16px;} .mode p{font-size:13.5px;color:var(--muted);margin-top:3px;}
+  .subhead{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:22px 0 8px;}
+
+  .note{background:rgba(230,192,121,.07);border:1px solid rgba(230,192,121,.2);border-radius:12px;padding:14px 16px;margin-top:16px;font-size:14px;color:var(--text);}
+  .note b{color:var(--flame);}
+
+  /* Screenshots — always fit, never overlap */
+  figure{margin:18px 0 4px;text-align:center;}
+  figure img{display:block;width:100%;height:auto;max-width:300px;margin:0 auto;border-radius:18px;border:1px solid var(--border);box-shadow:0 14px 36px rgba(0,0,0,.5);}
+  figure.wide img{max-width:520px;border-radius:12px;}
+  figcaption{font-size:12px;color:var(--dim);margin-top:9px;letter-spacing:.03em;}
+
+  /* Tiers */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px;}
+  .tier{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:18px 16px;}
+  .tier.pro{border-color:rgba(230,192,121,.4);background:linear-gradient(160deg,rgba(230,192,121,.07),var(--glass));}
+  .tier .tname{font-family:var(--serif);font-size:19px;}
+  .tier .price{font-size:26px;font-family:var(--serif);color:var(--flame);margin:6px 0 1px;}
+  .tier .price small{font-size:12px;color:var(--muted);font-family:var(--sans);}
+  .tier .yr{font-size:12px;color:var(--dim);margin-bottom:11px;}
+  .tier ul{list-style:none;}
+  .tier li{font-size:13px;color:var(--muted);padding:4px 0 4px 16px;position:relative;line-height:1.45;}
+  .tier li::before{content:"✦";position:absolute;left:0;color:var(--flame);font-size:9px;top:6px;}
+
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:12px;}
+  footer .wm-sm{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--text);display:block;margin-bottom:4px;}
+  footer .wm-sm .accent{color:var(--flame);}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F0D9A0"/><stop offset="55%" stop-color="#D9B36C"/><stop offset="100%" stop-color="#B8893C"/></linearGradient>
+  <linearGradient id="gFlame" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#C97B4B"/><stop offset="45%" stop-color="#E6C079"/><stop offset="100%" stop-color="#F6E6B8"/></linearGradient>
+  <radialGradient id="gHalo" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#F0D9A0" stop-opacity="0.45"/><stop offset="100%" stop-color="#F0D9A0" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<div class="wrap">
+
+  <div class="cover">
+    <svg width="104" height="104" viewBox="20 22 60 60" fill="none" style="display:block;margin:0 auto">
+      <circle cx="50" cy="48" r="26" fill="url(#gHalo)"/>
+      <path d="M29,67 Q50,87 71,67 Q50,76 29,67 Z" fill="url(#gGold)"/>
+      <path d="M50,68 C41,62 36,53 41,43 C43,48 46,49 47,45 C48,39 45,35 50,28 C55,36 60,43 60,52 C60,61 55,65 50,68 Z" fill="url(#gFlame)"/>
+      <path d="M50,62 C46,59 44,54 47,49 C48,52 50,52 50,49 C52,53 53,57 53,59 C53,61 51,62 50,62 Z" fill="#FFF6E0" opacity="0.65"/>
+    </svg>
+    <div class="wm"><span>sol</span><span class="accent">ace</span></div>
+    <div class="tag">Peace of mind for the people you love.</div>
+    <div class="rule"></div>
+    <div class="kicker">Feature Guide</div>
+    <div class="sub">An AI grief companion &amp; final-affairs planner · iOS · Android · Web</div>
+  </div>
+
+  <!-- 01 -->
+  <section>
+    <div class="eyebrow">Overview</div>
+    <h2 class="h-sec"><span class="num">01</span>What Solace is</h2>
+    <p class="lead">Solace is not another end-of-life checklist. It's a <b>warm, AI-powered companion</b> for life's hardest passages — preparing for the end of your own life, or carrying on after losing someone. It pairs a genuinely compassionate guide with everything practical: documents, wishes, contacts, and the dozens of tasks no one prepares you for.</p>
+    <p class="muted">Everything is private by default and works offline. The companion meets you where you are — leading with the heart, then helping with the paperwork, one gentle step at a time.</p>
+    <div class="subhead">Three ways people arrive</div>
+    <div class="modes">
+      <div class="mode"><h3>🕊 Planning my own affairs</h3><p>Putting your own wishes, documents, and instructions in order while you can — a profound act of love, made calm and unhurried.</p></div>
+      <div class="mode m2"><h3>🤍 Grieving a loved one</h3><p>You've lost someone. Solace becomes a steady first-responder: grounding, then walking you through the first hours, days, and weeks.</p></div>
+      <div class="mode m3"><h3>⚖ Settling an estate</h3><p>Acting as executor or administrator — an organized guide through a heavy, bureaucratic process, one priority at a time.</p></div>
+    </div>
+    <figure><img src="img/app-onboarding.png" alt="Solace onboarding screen"/><figcaption>Choosing how to begin</figcaption></figure>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="eyebrow">The difference</div>
+    <h2 class="h-sec"><span class="num">02</span>The AI grief companion</h2>
+    <p class="sec-intro">The heart of Solace. Not a chatbot or a form — the calm, kind presence you can turn to at 2am when it all feels like too much.</p>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">💛</span>Empathy first</h3><p>Leads with how you're holding up — validates the feeling before any task-talk. Never clinical, never "I understand how you feel."</p></div>
+      <div class="card"><h3><span class="ic">🫶</span>Gentle check-ins</h3><p>A time-aware "How are you holding up?" that opens a supportive, no-pressure conversation — not another reminder to do something.</p></div>
+      <div class="card"><h3><span class="ic">🧭</span>Guided through hard moments</h3><p>One tap to start: "I don't know where to begin," "Help me tell the children," "Write a goodbye letter," "What do I do in the first 48 hours?"</p></div>
+      <div class="card"><h3><span class="ic">🤍</span>Crisis companion</h3><p>In grief mode, a calm first-responder that walks you through right now — one small step at a time, nothing more.</p></div>
+      <div class="card"><h3><span class="ic">🪶</span>Acts for you</h3><p>Tell it something once and it quietly updates your plan — fills tasks, records contacts, drafts wishes — so you never re-type.</p></div>
+      <div class="card"><h3><span class="ic">🕯</span>Remembers</h3><p>Carries the thread across sessions — who you are, your loved one, what's been hard — and references it warmly, per family member.</p></div>
+    </div>
+    <figure><img src="img/app-companion.png" alt="Solace home with the companion panel"/><figcaption>The companion at home — a check-in and one-tap support for the hardest moments</figcaption></figure>
+    <div class="note"><b>Powered by the latest Claude models.</b> Pro &amp; trial members get Claude Opus — the most emotionally nuanced model — for the conversations that matter most; everyone gets a capable companion. Your API requests are proxied securely; keys never touch your device.</div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="eyebrow">Get everything in order</div>
+    <h2 class="h-sec"><span class="num">03</span>Planning &amp; records</h2>
+    <p class="sec-intro">Structured, compassionate tools for the practical side — each one the companion can help you fill.</p>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">⊞</span>Guided checklists</h3><p>Phased for the moment you're in — Planning Ahead, the Immediate hours, the First Week, and the First Month — with custom tasks of your own. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">⊟</span>Document records</h3><p>Track where the will, trust, insurance, deeds, IDs and more live — status, location, and notes, so nothing is left to guesswork. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">☎</span>Key contacts</h3><p>Attorney, funeral home, financial advisor, physician, clergy — everyone who matters, ready when the time comes. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">✦</span>Wishes &amp; legacy</h3><p>Put final wishes into words — how you'd want to be remembered and cared for — with companion help when the words are hard. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">✍</span>Obituary drafting</h3><p>A warm, dignified first draft generated from your details — refine it together. <span class="badge b-free">Free draft</span> <span class="badge b-pro">Pro re-gen</span></p></div>
+      <div class="card"><h3><span class="ic">◉</span>Crisis notes &amp; card</h3><p>The urgent things loved ones need first — plus a wallet-sized emergency card you can save and share. <span class="badge b-free">Free</span> <span class="badge b-pro">Pro save</span></p></div>
+      <div class="card"><h3><span class="ic">▦</span>Estate inventory</h3><p>A clear ledger of accounts, policies, property and beneficiaries — so your executor isn't left guessing. <span class="badge b-pro">Pro</span></p></div>
+      <div class="card"><h3><span class="ic">◈</span>Digital accounts</h3><p>Decide what happens to email, social, banking and subscriptions — memorialize, close, transfer, or delete. <span class="badge b-pro">Pro</span></p></div>
+      <div class="card"><h3><span class="ic">💌</span>Letters to loved ones</h3><p>Write messages to be read later — the companion helps you find the opening words. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">🕯</span>Religious &amp; cultural customs</h3><p>Record the rites and observances that matter for the service, so they're honored exactly. <span class="badge b-free">Free</span></p></div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="eyebrow">One step at a time</div>
+    <h2 class="h-sec"><span class="num">04</span>The four-phase checklist</h2>
+    <p class="sec-intro">Solace meets the moment you're in. Every task lives in one of four phases — so you're never facing all of it at once, and always know the next right thing to do.</p>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">🌱</span>Planning ahead</h3><p>Will, healthcare proxy, power of attorney, beneficiaries, and funeral preferences — the gifts you leave in order.</p></div>
+      <div class="card"><h3><span class="ic">◷</span>The immediate hours</h3><p>Death certificates, notifying family, contacting the funeral home, and securing the home and pets.</p></div>
+      <div class="card"><h3><span class="ic">📅</span>The first week</h3><p>Social Security, life insurance, employer &amp; pension, probate, banks, and the obituary.</p></div>
+      <div class="card"><h3><span class="ic">🗓</span>The first month</h3><p>Utilities, subscriptions, the VA, final taxes, the DMV, property titles, and distributing belongings.</p></div>
+    </div>
+    <figure class="wide"><img src="img/app-checklist.png" alt="Solace checklist with progress"/><figcaption>Progress tracked, phase by phase — add your own tasks, or let the companion check them off</figcaption></figure>
+    <div class="note"><b>The companion does the busywork.</b> Tell it what you've already handled and it ticks the boxes; add custom tasks of your own; on Pro, every list syncs across your devices.</div>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="eyebrow">Private by design · shared with intention</div>
+    <h2 class="h-sec"><span class="num">05</span>Security &amp; family</h2>
+    <div class="subhead">Security &amp; privacy</div>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">🛡</span>End-to-end encrypted vault</h3><p>Store the will, deeds, insurance and IDs encrypted on your device. Protected by a passphrase only you know, with a one-time recovery code. <span class="badge b-pro">Pro</span></p></div>
+      <div class="card"><h3><span class="ic">📵</span>Works offline, on-device</h3><p>Your plan lives locally first and keeps working with no connection. Sensitive fields are encrypted; nothing sensitive is required to leave your device. <span class="badge b-free">Free</span></p></div>
+      <div class="card"><h3><span class="ic">☁</span>Cross-device cloud sync</h3><p>Securely pick up where you left off across phone, tablet, and web — with conflict-safe merging. <span class="badge b-pro">Pro</span></p></div>
+      <div class="card"><h3><span class="ic">🔔</span>Reminders</h3><p>A periodic check-in and a six-month nudge to review your documents, so the plan stays current. <span class="badge b-pro">Pro</span></p></div>
+    </div>
+    <div class="subhead">Family &amp; trusted access</div>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">👪</span>Family member profiles</h3><p>A separate, private plan for each loved one — own tasks, records, wishes, documents and companion. Switch between them in a tap. <span class="badge b-family">Family</span></p></div>
+      <div class="card"><h3><span class="ic">🤝</span>Trusted contacts</h3><p>Name the people who can reach a plan when it's truly needed — on request (you're notified and can veto) or automatically if you stop checking in. <span class="badge b-family">Family</span></p></div>
+      <div class="card"><h3><span class="ic">✍</span>Collaborators</h3><p>A spouse or sibling can help keep a plan up to date in real time. <span class="badge b-family">Family</span></p></div>
+      <div class="card"><h3><span class="ic">🔐</span>Per-profile sharing</h3><p>Sharing is scoped to one family member at a time — granting access to Mom's plan never exposes Dad's or your own. <span class="badge b-family">Family</span></p></div>
+    </div>
+    <figure class="wide"><img src="img/app-family.png" alt="Family member switcher"/><figcaption>Switch between each loved one's private plan — each shared separately</figcaption></figure>
+    <div class="note"><b>People you share with never pay.</b> Trusted contacts and collaborators use the plan owner's access — only the owner subscribes to invite them.</div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="eyebrow">Simple, honest pricing</div>
+    <h2 class="h-sec"><span class="num">06</span>Plans</h2>
+    <p class="sec-intro">Start free. Every new member gets a <span class="accent">7-day trial of full Family access</span> — including the Opus companion — automatically.</p>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tname">Free</div>
+        <div class="price">$0</div>
+        <div class="yr">Get organized.</div>
+        <ul><li>Guided checklists &amp; document records</li><li>Contacts, wishes &amp; crisis notes</li><li>First obituary draft · 3 AI messages</li><li>Printable PDF export</li></ul>
+      </div>
+      <div class="tier pro">
+        <div class="tname accent">Pro</div>
+        <div class="price">$9<small> /mo</small></div>
+        <div class="yr">or $99/year · Your affairs, fully secured.</div>
+        <ul><li>Everything in Free</li><li>Unlimited AI + auto-fill</li><li>End-to-end encrypted vault</li><li>Estate inventory &amp; beneficiaries</li><li>Digital accounts tracker</li><li>Reminders &amp; cloud sync</li><li>Save emergency card to Photos</li></ul>
+      </div>
+      <div class="tier">
+        <div class="tname">Family</div>
+        <div class="price">$15<small> /mo</small></div>
+        <div class="yr">or $149/year · Protect &amp; share.</div>
+        <ul><li>Everything in Pro</li><li>Trusted contacts &amp; posthumous access</li><li>Collaborate with family in real time</li><li>Family member profiles</li><li>Priority support</li></ul>
+      </div>
+    </div>
+    <div class="subhead">Everywhere you need it</div>
+    <div class="grid">
+      <div class="card"><h3><span class="ic">📱</span>iOS, Android &amp; Web</h3><p>One Solace across phone, tablet, and browser — a native app with a held, branded splash and your plan in sync.</p></div>
+      <div class="card"><h3><span class="ic">🕯</span>Designed to comfort</h3><p>A warm "candlelight on dark" identity — built to feel calm and human in a moment that's anything but.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="wm-sm">sol<span class="accent">ace</span></span>
+    Peace of mind for the people you love.
+  </footer>
+
+</div>
+</body>
+</html>
