@@ -84,6 +84,14 @@ footer .sep{color:rgba(255,248,235,0.2);margin:0 8px}
   .shot{max-width:260px}
   .gallery{grid-template-columns:1fr;max-width:280px}
 }
+@media print{
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  @page{margin:0}
+  body{background:#0F0E0C}
+  header.hero,.feat,.themes,.faq .item,.cta{break-inside:avoid}
+  .heroshot,.shot,.gallery img{box-shadow:none}
+  .cta,footer{border-top:none}
+}
 </style>
 </head>
 <body>
