@@ -56,6 +56,15 @@ a{color:var(--flame);text-decoration:none}
 .gcap{font-size:12.5px;color:var(--dim);margin-top:12px}
 .gcap b{color:var(--text)}
 
+/* safeguards — full-width explainer graphics */
+.safe{padding:64px 0;border-top:1px solid rgba(255,248,235,0.07);text-align:center}
+.safe h2{font-family:var(--serif);font-weight:700;font-size:clamp(24px,3.4vw,33px);margin:12px auto 10px}
+.safe>p{color:var(--mut);max-width:640px;margin:0 auto 38px}
+.wide{width:100%;border-radius:16px;border:1px solid var(--bord);box-shadow:0 24px 60px rgba(0,0,0,0.5);display:block;margin:0 auto}
+.widecap{font-size:13px;color:var(--dim);margin:14px auto 40px;max-width:640px}
+.widecap b{color:var(--text)}
+.widecap:last-child{margin-bottom:0}
+
 /* cta / footer */
 .cta{text-align:center;padding:80px 24px 30px;border-top:1px solid rgba(255,248,235,0.07);margin-top:40px}
 .cta h2{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,38px);margin-bottom:14px}
@@ -205,6 +214,16 @@ footer .sep{color:rgba(255,248,235,0.2);margin:0 8px}
       </ul>
     </div>
     <img class="phone shot" src="img/settings.png" alt="Settings tab">
+  </section>
+
+  <section class="safe wrap">
+    <div class="kicker">Safe by design</div>
+    <h2>The hard parts, handled with care</h2>
+    <p>Two safeguards do the quiet work behind the scenes — so the people you love aren't locked out if something happens to you, and a forgotten passphrase never means losing everything.</p>
+    <img class="wide" src="img/guide-release.png" alt="How the posthumous check-in works: you check in, Solace warns you first, then your circle is notified">
+    <p class="widecap"><b>A release that opens only when it should.</b> Your plan stays private while you're here. Go quiet and Solace warns <b>you</b> first — with time to stop it in one tap — before your trusted circle is ever notified.</p>
+    <img class="wide" src="img/guide-vault.png" alt="Vault recovery and quick-unlock: recovery-code warning, device PIN, manage controls, and the hardened save-your-code step">
+    <p class="widecap"><b>Your vault — harder to lose, easier to open.</b> We nudge you to keep a recovery code (and let you mint a fresh one anytime), plus an optional device PIN for faster unlock — all without ever weakening the encryption.</p>
   </section>
 
   <section class="faq">
